@@ -68,3 +68,25 @@ export function search_user_mails(user: string, search: string){
         }
     })
 }
+
+export function get_user_mail_by_label(user: string, label: string){
+    let url: string = "http://localhost:5000"
+    console.log("url: " + url)
+    const path = "/mails/user/" + user + "/label/" + label
+
+    url = url+path;
+
+    return request({
+        url    
+    }).then(res => {
+        return {
+            "success": true,
+            "data": res
+        }
+    }).catch(err => {
+        return {
+            "success": false,
+            "error": err
+        }
+    })
+}
