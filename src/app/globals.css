@@ -6,10 +6,45 @@
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
+
+    --color-dark-dp0: var(--background);
+    --color-dark-dp1: #131416;
+    --color-dark-dp2: #1C1F21;
+    --color-dark-dp3: #26282C;
+    --color-dark-dp4: #2F3337;
+    --color-primary: var(--color-indigo-500);
+
+    --color-light-text: #ffffff;
+    --color-dark-text: #171717;
+    --color-alert-error: oklch(0.586 0.253 17.585);
+}
+
+@layer {
+    a, button{
+        @apply cursor-pointer
+    }
+}
+
+@layer components{
+    .input-label{
+        @apply text-sm text-light-text font-medium
+    }
+
+    .input{
+        @apply mt-2 w-full block p-2 text-sm rounded text-light-text outline outline-[#4c4f52] outline-white/20 bg-dark-dp2 font-medium
+    }
+
+    .card{
+        @apply shadow bg-dark-dp1 p-6 rounded border border-white/10
+    }
+
+    .button{
+        @apply bg-primary p-2 w-full rounded text-sm
+    }
 }
 
 @media (prefers-color-scheme: dark) {

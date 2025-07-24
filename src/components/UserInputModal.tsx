@@ -1,0 +1,44 @@
+import React, { useRef } from 'react'
+import Modal from './Modal'
+import { add_user_account } from '@/utils/account'
+
+function UserInputModal({ isUserExists }) {
+    const userInput = useRef(null)
+    const passInput = useRef(null)
+
+    function onAccountSubmit(e: MouseEvent){
+        e.preventDefault()
+
+        if(userInput == null || passInput == null){
+            console.log("Input fields required")
+            return
+        }
+
+        add_user_account(userInput.current?.value, passInput.current?.value)
+        isUserExists(true)
+    }
+
+    return (
+        <Modal>
+            <div className='text-center mb-6'>
+                <h1 className='text-3xl font-semibold mb-4'>Welcome</h1>
+                <p className='text-sm tracking-wide text-gray-300'>Fill the credentials to fetch your account emails</p>
+            </div>
+            <form action="" onSubmit={onAccountSubmit}>
+                <div className='mb-4'>
+                    <label htmlFor="user" className='input-label  mb-2'>User</label>
+                    <input type="text" name='user' id='user' className='input' ref={userInput} />
+                    <p className='text-alert-error mt-2 text-sm'>This field is required</p>
+                </div>
+                <div className='mb-4'>
+                    <label htmlFor="pass" className='input-label font-medium mb-2'>Password</label>
+                    <input type="text" name='pass' id='pass' className='input' ref={passInput} />
+                    <p className='text-alert-error mt-2 text-sm'>This field is required</p>
+                </div>
+                <button type='submit' className='button mt-2'>Add Account</button>
+            </form>
+        </Modal>
+    )
+}
+
+export default UserInputModal
