@@ -9,13 +9,11 @@ function Accounts() {
     const [accountModal, setAccountModal] = useState(false);
 
     useEffect(() => {
-        get_user_accounts().then(res => {
-            if(res.success){
-                setAccounts(res.data)
-                console.log(res.data)
-            }
+        const res = get_user_accounts()
+        if(res.success){
+            setAccounts(res.data)
+            console.log(res.data)
         }
-        )
     }, [])
 
     return (

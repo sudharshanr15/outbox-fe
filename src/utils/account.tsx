@@ -128,3 +128,39 @@ export function verify_user(user: string, pass: string){
         }
     })
 }
+
+export function load_user_mails(users: {}){
+    let url: string = "http://localhost:5000"
+    const path = "/mails"
+
+    url = url+path;
+
+    const body = users
+
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json")
+
+    return request({
+        url,
+        body: JSON.stringify(body),
+        method: "POST",
+        headers
+    }).then(res => {
+        if(res.success == true){
+            return {
+                "success": true,
+                "data": res
+            }
+        }else{
+            return {
+                "success": false
+            }
+        }
+    }).catch(err => {
+        return {
+            "success": false,
+            "error": err
+        }
+    })
+
+}

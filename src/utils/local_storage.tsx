@@ -1,6 +1,6 @@
 'use client';
 
-export async function get_item(name: string){
+export function get_item(name: string){
     let result = localStorage.getItem(name);
     
     if(result != null){

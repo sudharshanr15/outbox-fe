@@ -1,10 +1,11 @@
 'use client';
 
-import { get_user_mail_by_label, get_user_mails } from '@/utils/account';
-import React, { useEffect, useState } from 'react'
+import { get_user_mail_by_label, get_user_mails, load_user_mails } from '@/utils/account';
+import React, { use, useEffect, useState } from 'react'
 import Search from './Search';
 import { ArrowLeft, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
+import { get_item } from '@/utils/local_storage';
 
 const label_colors = {
     "All": "bg-white",
@@ -18,16 +19,41 @@ const label_colors = {
 const labels = ["All", "Interested", "Not Interested", "Spam", "Out Of Office", "Meeting Booked"]
 
 function ListMail({ user }: {user: string}) {
+    user = decodeURIComponent(user)
     const [mails, setMails] = useState([]);
     const [activeLabel, setActiveLabel] = useState(labels[0]);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        get_user_mails(user).then(res => {
-            setMails(res.data.data.data.data.hits.hits)
-            console.log(res.data.data.data.data.hits.hits)
-        }).catch(err => console.log(err))
+        (async () => {
+            setIsLoading(true);
+            await load_and_store_mails(user);
+            setIsLoading(false);
+        })()
     }, [])
+
+    async function load_and_store_mails(user: string){
+        const user_mails = await get_user_mails(user)
+        if(user_mails.success == false){
+            const account = get_item("users")
+            console.log({"users": account.data})
+            let param = {
+                "users": account.data
+            }
+            const load_mail = await load_user_mails( param )
+            if(load_mail.success == false){
+                console.error("Failed to load user mails:");
+            }else{
+                const new_mails = await get_user_mails(user)
+                if(new_mails.success){
+                    setMails(new_mails.data.data.data.data.hits.hits);
+                }
+            }
+        }else{
+            setMails(user_mails.data.data.data.data.hits.hits);
+        }
+    }
 
     function onFilterToggle(){
         setIsFilterOpen(prev => !prev)
@@ -105,6 +131,9 @@ function ListMail({ user }: {user: string}) {
                 ))}
                 </tbody>
             </table>
+            {isLoading && <div className='text-center text-light-text mt-8'>Loading...</div>}
+            {!isLoading && mails.length == 0 && <div className='text-center text-light-text mt-8'>No mails found</div>}
+
         </div>
         </>
     )
