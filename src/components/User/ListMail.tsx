@@ -41,22 +41,24 @@ function ListMail({ user }: {user: string}) {
 
     async function load_and_store_mails(user: string){
         const user_mails = await get_user_mails(user)
+        console.log(user_mails)
         if(user_mails.success == false){
-            const account = get_item("users")
-            console.log({"users": account.data})
-            let param = {
-                "users": account.data
-            }
-            const load_mail = await load_user_mails( param )
-            if(load_mail.success == false){
-                console.error("Failed to load user mails:");
-            }else{
-                const new_mails = await get_user_mails(user)
-                if(new_mails.success){
-                    setMails(new_mails.data.data.data.hits.hits);
-                    setTotalValue(new_mails.data.data.data.hits.total.value);
-                }
-            }
+            // const account = get_item("users")
+            // console.log({"users": account.data})
+            // let param = {
+            //     "users": account.data
+            // }
+            // const load_mail = await load_user_mails( param )
+            // if(load_mail.success == false){
+            //     console.error("Failed to load user mails:");
+            // }else{
+            //     const new_mails = await get_user_mails(user)
+            //     if(new_mails.success){
+            //         setMails(new_mails.data.data.data.hits.hits);
+            //         setTotalValue(new_mails.data.data.data.hits.total.value);
+            //     }
+            // }
+            console.log("error")
         }else{
             setMails(user_mails.data.data.data.hits.hits);
             setTotalValue(user_mails.data.data.data.hits.total.value);
@@ -127,10 +129,10 @@ function ListMail({ user }: {user: string}) {
                 <div className='text-sm flex items-center gap-4'>
                     <span>Showing {currentPageStart} to {currentPageEnd} of {totalValue} results</span>
                     <div>
-                        <button onClick={pageIncrement}>
+                        <button onClick={pageDecrement}>
                             <ChevronLeft size={20} />
                         </button>
-                        <button onClick={pageDecrement} className='ms-4'>
+                        <button onClick={pageIncrement} className='ms-4'>
                             <ChevronRight size={20} />
                         </button>
                     </div>

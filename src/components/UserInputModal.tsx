@@ -22,6 +22,7 @@ function UserInputModal({ isUserExists, onClose }: { isUserExists?: React.Dispat
         verify_user(user, pass).then((res) => {
             if(res.success){
                 add_user_account(user, pass)
+                onClose(true)
                 
                 if(isUserExists != null){
                     isUserExists(true)
