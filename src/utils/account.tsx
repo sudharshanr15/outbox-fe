@@ -46,3 +46,25 @@ export function get_user_mails(user: string){
         }
     })
 }
+
+export function search_user_mails(user: string, search: string){
+    let url: string = "http://localhost:5000"
+    console.log("url: " + url)
+    const path = "/mails/user/" + user + "/search/" + search
+
+    url = url+path;
+
+    return request({
+        url    
+    }).then(res => {
+        return {
+            "success": true,
+            "data": res
+        }
+    }).catch(err => {
+        return {
+            "success": false,
+            "error": err
+        }
+    })
+}
