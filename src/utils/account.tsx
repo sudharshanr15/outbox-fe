@@ -25,10 +25,10 @@ export function get_user_accounts(){
     return get_item("users")
 }
 
-export function get_user_mails(user: string){
+export function get_user_mails(user: string, from = 1){
     let url: string = "http://localhost:5000"
     console.log("url: " + url)
-    const path = "/mails/user/" + user
+    const path = "/mails/user/" + user + "?from=" + from
 
     url = url+path;
 
@@ -37,7 +37,7 @@ export function get_user_mails(user: string){
     }).then(res => {
         return {
             "success": true,
-            "data": res
+            "data": res.data
         }
     }).catch(err => {
         return {

@@ -12,7 +12,7 @@ function Search({ user, setMails }) {
 
         if(input.length == 0){
             get_user_mails(user).then(res => {
-                setMails(res.data.data.data.data.hits.hits)
+                setMails(res.data.data.data.hits.hits)
             }).catch(err => console.log(err))
         }else{
             search_user_mails(user, search.current.value).then(res => {

@@ -3,7 +3,7 @@
 import { get_user_mail_by_label, get_user_mails, load_user_mails } from '@/utils/account';
 import React, { use, useEffect, useState } from 'react'
 import Search from './Search';
-import { ArrowLeft, ChevronDown } from 'lucide-react';
+import { ArrowLeft, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { get_item } from '@/utils/local_storage';
 
@@ -18,12 +18,18 @@ const label_colors = {
 
 const labels = ["All", "Interested", "Not Interested", "Spam", "Out Of Office", "Meeting Booked"]
 
+const page_size = 50;
+
 function ListMail({ user }: {user: string}) {
     user = decodeURIComponent(user)
     const [mails, setMails] = useState([]);
     const [activeLabel, setActiveLabel] = useState(labels[0]);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [totalValue, setTotalValue] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPageStart, setCurrentPageStart] = useState(0);
+    const [currentPageEnd, setCurrentPageEnd] = useState(0);
 
     useEffect(() => {
         (async () => {
@@ -47,11 +53,13 @@ function ListMail({ user }: {user: string}) {
             }else{
                 const new_mails = await get_user_mails(user)
                 if(new_mails.success){
-                    setMails(new_mails.data.data.data.data.hits.hits);
+                    setMails(new_mails.data.data.data.hits.hits);
+                    setTotalValue(new_mails.data.data.data.hits.total.value);
                 }
             }
         }else{
-            setMails(user_mails.data.data.data.data.hits.hits);
+            setMails(user_mails.data.data.data.hits.hits);
+            setTotalValue(user_mails.data.data.data.hits.total.value);
         }
     }
 
@@ -65,8 +73,8 @@ function ListMail({ user }: {user: string}) {
 
         if(el == "All"){
             get_user_mails(user).then(res => {
-                setMails(res.data.data.data.data.hits.hits)
-                console.log(res.data.data.data.data.hits.hits)
+                console.log(res.data.data.data.hits.hits)
+                setMails(res.data.data.data.hits.hits)
             }).catch(err => console.log(err))
         }else{
             get_user_mail_by_label(user, el).then(res => {
@@ -75,18 +83,58 @@ function ListMail({ user }: {user: string}) {
         }
     }
 
+    useEffect(() => {
+        setCurrentPageStart(((currentPage - 1) * page_size) + 1);
+        setCurrentPageEnd(Math.min(page_size * currentPage, totalValue));
+    }, [currentPage, mails])
+
+    function pageIncrement(){
+        if(currentPageEnd >= totalValue){
+            return;
+        }
+        let page = currentPage + 1;
+        setCurrentPage(page)
+        get_user_mails(user, currentPageEnd).then(res => {
+            setMails(res.data.data.data.hits.hits)
+        }).catch(err => console.log(err))
+    }
+
+    function pageDecrement(){
+        if(currentPage <= 1){
+            setCurrentPageStart(1)
+            return 
+        }
+        get_user_mails(user, currentPageStart).then(res => {
+            setMails(res.data.data.data.hits.hits)
+        }).catch(err => console.log(err))
+
+
+        setCurrentPage(prev => prev - 1)
+    }
+
     return (
         <>
         <Search user={user} setMails={setMails} />
         
         <div className='mt-8'>
-            <div className="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between mb-4">
-                <Link href={"/"} className='text-sm font-semibold underline flex items-center gap-4'>
-                    <span className='inline'>
-                        <ArrowLeft size={20} />
-                    </span>
-                    <span className='inline'>Mail: { decodeURIComponent(user) }</span>
-                </Link>
+            <Link href={"/"} className='flex items-center gap-4 mb-4 underline font-semibold'>
+                <span className='inline'>
+                    <ArrowLeft size={20} />
+                </span>
+                <span className='inline'>Mail: { decodeURIComponent(user) }</span>
+            </Link>
+            <div className="flex items-center justify-between mb-4">
+                <div className='text-sm flex items-center gap-4'>
+                    <span>Showing {currentPageStart} to {currentPageEnd} of {totalValue} results</span>
+                    <div>
+                        <button onClick={pageIncrement}>
+                            <ChevronLeft size={20} />
+                        </button>
+                        <button onClick={pageDecrement} className='ms-4'>
+                            <ChevronRight size={20} />
+                        </button>
+                    </div>
+                </div>
                 <div className="relative inline-block">
                     <button className="relative z-10 block px-4 py-2 card flex items-center gap-4 w-full" onClick={onFilterToggle}>
                         <span className={`w-3 aspect-square ${label_colors[activeLabel]} inline-block rounded-full`}></span>
@@ -95,7 +143,6 @@ function ListMail({ user }: {user: string}) {
                         <ChevronDown size={20} />
                         </span>
                     </button>
-
                     <div
                         className={`absolute right-0 z-20 w-48 origin-top-right card p-2 ${isFilterOpen ? "" : "hidden"}`}
                     >
