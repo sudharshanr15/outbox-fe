@@ -15,9 +15,6 @@ function page() {
         }
     }, [])
 
-    useEffect(() => {
-        console.log(userExists)
-    }, [userExists])
 
     if(!userExists){        
         return (

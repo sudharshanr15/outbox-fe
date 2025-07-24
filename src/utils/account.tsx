@@ -71,7 +71,6 @@ export function search_user_mails(user: string, search: string){
 
 export function get_user_mail_by_label(user: string, label: string){
     let url: string = "http://localhost:5000"
-    console.log("url: " + url)
     const path = "/mails/user/" + user + "/label/" + label
 
     url = url+path;
@@ -82,6 +81,45 @@ export function get_user_mail_by_label(user: string, label: string){
         return {
             "success": true,
             "data": res
+        }
+    }).catch(err => {
+        return {
+            "success": false,
+            "error": err
+        }
+    })
+}
+
+export function verify_user(user: string, pass: string){
+    let url: string = "http://localhost:5000"
+    const path = "/users/verify"
+
+    url = url+path;
+
+    const body = {
+        user,
+        pass
+    }
+
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json")
+
+    return request({
+        url,
+        body: JSON.stringify(body),
+        method: "POST",
+        headers
+    }).then(res => {
+        console.log(res)
+        if(res.success == true){
+            return {
+                "success": true,
+                "data": res
+            }
+        }else{
+            return {
+                "success": false
+            }
         }
     }).catch(err => {
         return {

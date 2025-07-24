@@ -10,8 +10,8 @@ export default async function request({ url, method = "GET", body, headers}: Req
     params.method = method
 
     params.headers = {
-        ...params.headers,
-        ...headers
+        ...headers,
+        "Content-Type": "application/json"
     }
 
      if(body){
@@ -29,10 +29,16 @@ export default async function request({ url, method = "GET", body, headers}: Req
                     return res.json()
                 })
                 .then(res => {
-                    resolve({
-                        success: true,
-                        data: res
-                    });
+                    if(res.success){
+                        resolve({
+                            success: true,
+                            data: res
+                        });
+                    }else{
+                        reject({
+                            success: false,
+                        })
+                    }
                 })
                 .catch(err => {
                     reject({
