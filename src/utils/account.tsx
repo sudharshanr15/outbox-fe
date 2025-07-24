@@ -21,3 +21,7 @@ export function add_user_account(user: string, pass: string){
 
     localStorage.setItem("users", JSON.stringify(new_val));
 }
+
+export function get_user_accounts(){
+    return get_item("users")
+}

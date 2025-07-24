@@ -1,0 +1,43 @@
+import { get_user_accounts } from '@/utils/account'
+import Link from 'next/link'
+import React, { useEffect, useState } from 'react'
+
+function Accounts() {
+
+    const [accounts, setAccounts] = useState([])
+
+    useEffect(() => {
+        get_user_accounts().then(res => {
+            if(res.success){
+                setAccounts(res.data)
+                console.log(res.data)
+            }
+        }
+        )
+    }, [])
+
+    return (
+        <div className='min-h-screen flex justify-center items-center'>
+            <div className='container'>
+                <div className="flex items-center justify-between mb-4">
+                    <h1 className='text-3xl font-semibold'>Your Accounts</h1>
+                    <Link href={""} className='button px-4'>
+                        Add Account
+                    </Link>
+                </div>
+                <div className="card py-0">
+                    {Object.values(accounts).map((acc, index) => (
+                        <Link href={""} className='hover:bg-dark-dp3/50 py-4 flex w-full justify-between border-b border-white/20 last:border-0' key={index}>
+                            <div>
+                                <span className='h-7 aspect-square inline-flex items-center justify-center bg-red-400 rounded-full text-xs text-black font-semibold'>{ acc!.user[0].toUpperCase() }</span>
+                                <span className='ms-4'>{ acc.user }</span>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default Accounts

@@ -43,7 +43,7 @@
     }
 
     .button{
-        @apply bg-primary p-2 w-full rounded text-sm
+        @apply bg-primary p-2 rounded text-sm
     }
 }
 

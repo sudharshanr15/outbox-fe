@@ -1,5 +1,6 @@
 'use client';
 
+import Accounts from '@/components/Home/Accounts';
 import UserInputModal from '@/components/UserInputModal';
 import React, { useEffect, useState } from 'react'
 
@@ -27,9 +28,7 @@ function page() {
     }
 
     return (
-        <>
-        sdf
-        </>
+        <Accounts />
     )
 
 }

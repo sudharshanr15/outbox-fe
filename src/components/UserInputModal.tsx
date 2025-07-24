@@ -35,7 +35,7 @@ function UserInputModal({ isUserExists }) {
                     <input type="text" name='pass' id='pass' className='input' ref={passInput} />
                     <p className='text-alert-error mt-2 text-sm'>This field is required</p>
                 </div>
-                <button type='submit' className='button mt-2'>Add Account</button>
+                <button type='submit' className='button w-full mt-2'>Add Account</button>
             </form>
         </Modal>
     )
