@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react'
 import Modal from './Modal'
-import { add_user_account, verify_user } from '@/utils/account'
+import { verify_user } from '@/utils/account'
+import { add_user_account } from '@/utils/local_storage'
 
 function UserInputModal({ isUserExists, onClose }: { isUserExists?: React.Dispatch<React.SetStateAction<boolean>>, onClose?: any }) {
     const userInput = useRef(null)

@@ -1,34 +1,11 @@
-import { get_item } from "./local_storage";
+'use server'
+
 import request from "./request";
 
-export function add_user_account(user: string, pass: string){
-    let current_users: string | null = localStorage.getItem("users");
-
-    let new_val: {
-        [key: string]: {
-            "user": string,
-            "pass": string
-        }
-    }
-    if(current_users == null){
-        new_val = {}
-    }else{
-        new_val = JSON.parse(current_users)
-    }
-
-    new_val[user] = {user, pass}
-
-    localStorage.setItem("users", JSON.stringify(new_val));
-}
-
-export function get_user_accounts(){
-    return get_item("users")
-}
-
-export function get_user_mails(user: string, from = 1){
-    let url: string = "http://localhost:5000"
-    console.log("url: " + url)
+export async function get_user_mails(user: string, from = 1){
+    let url: string = process.env.BACKEND_HOST || "http://localhost:5000"
     const path = "/mails/user/" + user + "?from=" + from
+    console.log(process.env.BACKEND_HOST)
 
     url = url+path;
 
@@ -47,8 +24,8 @@ export function get_user_mails(user: string, from = 1){
     })
 }
 
-export function search_user_mails(user: string, search: string){
-    let url: string = "http://localhost:5000"
+export async function search_user_mails(user: string, search: string){
+    let url: string = process.env.BACKEND_HOST || "http://localhost:5000"
     console.log("url: " + url)
     const path = "/mails/user/" + user + "/search/" + search
 
@@ -69,8 +46,8 @@ export function search_user_mails(user: string, search: string){
     })
 }
 
-export function get_user_mail_by_label(user: string, label: string){
-    let url: string = "http://localhost:5000"
+export async function get_user_mail_by_label(user: string, label: string){
+    let url: string = process.env.BACKEND_HOST || "http://localhost:5000"
     const path = "/mails/user/" + user + "/label/" + label
 
     url = url+path;
@@ -90,8 +67,8 @@ export function get_user_mail_by_label(user: string, label: string){
     })
 }
 
-export function verify_user(user: string, pass: string){
-    let url: string = "http://localhost:5000"
+export async function verify_user(user: string, pass: string){
+    let url: string = process.env.BACKEND_HOST || "http://localhost:5000"
     const path = "/users/verify"
 
     url = url+path;
@@ -129,8 +106,8 @@ export function verify_user(user: string, pass: string){
     })
 }
 
-export function load_user_mails(users: {}){
-    let url: string = "http://localhost:5000"
+export async function load_user_mails(users: {}){
+    let url: string = process.env.BACKEND_HOST || "http://localhost:5000"
     const path = "/mails"
 
     url = url+path;

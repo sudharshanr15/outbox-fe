@@ -1,7 +1,7 @@
-import { get_user_accounts } from '@/utils/account'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import UserInputModal from '../UserInputModal'
+import { get_user_accounts } from '@/utils/local_storage';
 
 function Accounts() {
 
