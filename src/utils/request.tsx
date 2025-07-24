@@ -5,7 +5,7 @@ interface RequestParams {
     body?: string
 }
 
-export default async function request({ url, method = "GET", body, headers}: RequestParams): Promise<RequestParams>{
+export default async function request({ url, method = "GET", body, headers}: RequestParams){
     let params: any = {}
     params.method = method
 
@@ -18,38 +18,30 @@ export default async function request({ url, method = "GET", body, headers}: Req
         params.body = body
     }
 
-    let status = true
-    let statusCode = 0
-
     return new Promise((resolve, reject) => {
         try{
             fetch(url, params)
                 .then(res => {
-                    if(res.ok){
-                        status = true
-                    }else{
-                        status = false
+                    if(!res.ok){
+                        throw new Error("Error fetching mail")
                     }
-                    statusCode = res.status
+                    
                     return res.json()
                 })
                 .then(res => {
                     resolve({
-                        status,
-                        statusCode,
+                        success: true,
                         data: res
-                    })
+                    });
                 })
                 .catch(err => {
                     reject({
-                        status,
-                        statusCode: 0,
+                        success: false,
                     })
                 })
         }catch(err){
             reject({
-                status: false,
-                statusCode: 0,
+                success: false,
             })
         }
     })
