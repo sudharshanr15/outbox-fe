@@ -1,10 +1,12 @@
 import { get_user_accounts } from '@/utils/account'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
+import UserInputModal from '../UserInputModal'
 
 function Accounts() {
 
     const [accounts, setAccounts] = useState([])
+    const [accountModal, setAccountModal] = useState(false);
 
     useEffect(() => {
         get_user_accounts().then(res => {
@@ -21,9 +23,9 @@ function Accounts() {
             <div className='container p-4'>
                 <div className="flex items-center justify-between mb-4">
                     <h1 className='text-xl md:text-3xl font-semibold'>Your Accounts</h1>
-                    <Link href={""} className='button px-2 md:px-4'>
+                    <button onClick={() => setAccountModal(prev => !prev)} className='button px-2 md:px-4'>
                         Add Account
-                    </Link>
+                    </button>
                 </div>
                 <div className="card py-0">
                     {Object.values(accounts).map((acc, index) => (
@@ -36,6 +38,7 @@ function Accounts() {
                     ))}
                 </div>
             </div>
+            { accountModal && <UserInputModal onClose={() => setAccountModal(false)} isUserExists={undefined} /> }
         </div>
     )
 }

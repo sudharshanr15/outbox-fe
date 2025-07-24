@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import Modal from './Modal'
 import { add_user_account } from '@/utils/account'
 
-function UserInputModal({ isUserExists }) {
+function UserInputModal({ isUserExists, onClose }: { isUserExists?: React.Dispatch<React.SetStateAction<boolean>>, onClose?: any }) {
     const userInput = useRef(null)
     const passInput = useRef(null)
 
@@ -15,7 +15,9 @@ function UserInputModal({ isUserExists }) {
         }
 
         add_user_account(userInput.current?.value, passInput.current?.value)
-        isUserExists(true)
+        if(isUserExists != null){
+            isUserExists(true)
+        }
     }
 
     return (
@@ -28,14 +30,15 @@ function UserInputModal({ isUserExists }) {
                 <div className='mb-4'>
                     <label htmlFor="user" className='input-label  mb-2'>User</label>
                     <input type="text" name='user' id='user' className='input' ref={userInput} />
-                    <p className='text-alert-error mt-2 text-sm'>This field is required</p>
+                    {/* <p className='text-alert-error mt-2 text-sm'>This field is required</p> */}
                 </div>
                 <div className='mb-4'>
                     <label htmlFor="pass" className='input-label font-medium mb-2'>Password</label>
                     <input type="text" name='pass' id='pass' className='input' ref={passInput} />
-                    <p className='text-alert-error mt-2 text-sm'>This field is required</p>
+                    {/* <p className='text-alert-error mt-2 text-sm'>This field is required</p> */}
                 </div>
                 <button type='submit' className='button w-full mt-2'>Add Account</button>
+                {isUserExists == undefined && <button type='button' className='button bg-dark-dp4 w-full mt-2' onClick={onClose}>Cancel</button>}
             </form>
         </Modal>
     )
