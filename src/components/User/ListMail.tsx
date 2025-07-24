@@ -3,6 +3,8 @@
 import { get_user_mail_by_label, get_user_mails } from '@/utils/account';
 import React, { useEffect, useState } from 'react'
 import Search from './Search';
+import { ArrowLeft, ChevronDown } from 'lucide-react';
+import Link from 'next/link';
 
 const label_colors = {
     "All": "bg-white",
@@ -52,16 +54,19 @@ function ListMail({ user }: {user: string}) {
         <Search user={user} setMails={setMails} />
         
         <div className='mt-8'>
-            <div className="flex justify-between items-center mb-4">
-                <p className='text-sm'>Mail: <span>{ decodeURIComponent(user) }</span></p>
+            <div className="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between mb-4">
+                <Link href={"/"} className='text-sm font-semibold underline flex items-center gap-4'>
+                    <span className='inline'>
+                        <ArrowLeft size={20} />
+                    </span>
+                    <span className='inline'>Mail: { decodeURIComponent(user) }</span>
+                </Link>
                 <div className="relative inline-block">
                     <button className="relative z-10 block px-4 py-2 card flex items-center gap-4 w-full" onClick={onFilterToggle}>
                         <span className={`w-3 aspect-square ${label_colors[activeLabel]} inline-block rounded-full`}></span>
                         <span className='hidden sm:inline'>{ activeLabel }</span>
                         <span>
-                            {/* <svg className="w-5 h-5 text-gray-800 dark:text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                            </svg> */}
+                        <ChevronDown size={20} />
                         </span>
                     </button>
 
