@@ -14,7 +14,7 @@ function Accounts() {
             setAccounts(res.data)
             console.log(res.data)
         }
-    }, [])
+    }, [accountModal])
 
     return (
         <div className='min-h-screen flex justify-center items-center'>
@@ -36,7 +36,7 @@ function Accounts() {
                     ))}
                 </div>
             </div>
-            { accountModal && <UserInputModal onClose={() => setAccountModal(false)} isUserExists={undefined} /> }
+            { accountModal && <UserInputModal onClose={() => setAccountModal(false)} isUserExists={() => {}} /> }
         </div>
     )
 }

@@ -11,6 +11,7 @@ function UserInputModal({ isUserExists, onClose }: { isUserExists?: React.Dispat
 
     function onAccountSubmit(e: MouseEvent){
         e.preventDefault()
+        setInvalidClient(false)
         setIsLoading(true)
 
         if(userInput == null || passInput == null){
@@ -20,20 +21,20 @@ function UserInputModal({ isUserExists, onClose }: { isUserExists?: React.Dispat
 
         const user = userInput.current.value;
         const pass = passInput.current.value;
-        verify_user(user, pass).then((res) => {
+        verify_user(user, pass).then(async (res) => {
             if(res.success){
-                add_user_account(user, pass)
-                window.location.reload()                
+                await add_user_account(user, pass)
                 if(isUserExists != null){
                     isUserExists(true)
+                    onClose()
                 }
             }else{
                 setInvalidClient(true)
             }
-            setIsLoading(false)
         }).catch(err => {
-            setIsLoading(false)
             setInvalidClient(true)
+        }).finally(() => {
+            setIsLoading(false)
         })
 
     }
@@ -56,7 +57,7 @@ function UserInputModal({ isUserExists, onClose }: { isUserExists?: React.Dispat
                     <input type="password" name='pass' id='pass' className='input' ref={passInput} />
                     {/* <p className='text-alert-error mt-2 text-sm'>This field is required</p> */}
                 </div>
-                <button type='submit' className='button w-full mt-2'>{ isLoading ? "Verifying..." : "Add Account"  }</button>
+                <button type='submit' className='button w-full mt-2' disabled={isLoading ? true : false}>{ isLoading ? "Verifying..." : "Add Account"  }</button>
                 {isUserExists == undefined && <button type='button' className='button bg-dark-dp4 w-full mt-2' onClick={onClose}>Cancel</button>}
             </form>
         </Modal>

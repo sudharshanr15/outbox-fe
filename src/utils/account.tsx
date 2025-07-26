@@ -89,20 +89,16 @@ export async function verify_user(user: string, pass: string){
     }).then(res => {
         console.log(res)
         if(res.success == true){
-            return {
+            return Promise.resolve({
                 "success": true,
-                "data": res
-            }
+            })
         }else{
-            return {
-                "success": false
-            }
+            throw new Error()
         }
     }).catch(err => {
-        return {
+        return Promise.reject({
             "success": false,
-            "error": err
-        }
+        })
     })
 }
 

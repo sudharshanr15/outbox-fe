@@ -46,4 +46,6 @@ export async function add_user_account(user: string, pass: string){
     new_val[user] = {user, pass}
 
     localStorage.setItem("users", JSON.stringify(new_val));
+
+    return
 }
