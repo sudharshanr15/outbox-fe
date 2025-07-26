@@ -18,7 +18,10 @@ function MailItem({ mail }) {
                 {mail["_source"]["from"][0]["name"]}
             </td>
             <td className='flex-1 text-wrap break-all text-sm'>{mail["_source"]["subject"]}</td>
-            <td className='text-right text-xs font-semibold'>{ new Date(mail["_source"]['date']).toLocaleDateString('en-GB', {"month": "long", day: "numeric"}) }</td>
+            <td className='text-right text-xs font-semibold'>
+                {mail['received'] && <span className='px-3 py-2 bg-green-700 rounded-full'>now</span>}
+                {!mail['received'] && new Date(mail["_source"]['date']).toLocaleDateString('en-GB', {"month": "long", day: "numeric"}) }
+            </td>
         </tr>
     )
 }

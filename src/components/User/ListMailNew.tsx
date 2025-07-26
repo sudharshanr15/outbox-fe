@@ -3,23 +3,46 @@
 import { get_user_mails } from '@/utils/account';
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import MailItem from './MailItem';
 import Pagination from './Pagination';
 import MailFilter from './MailFilter';
 import Search from './Search';
+import { useSocket } from '@/app/hooks/useSocket';
+import { join_mail_room } from '@/utils/socket';
 
 function ListMailNew({ user }) {
 
     const [mails, setMails] = useState([])
     const [totalCount, setTotalCount] = useState(0)
+    const mailsRef = useRef(mails)
 
     useEffect(() => {
         load_mails(user)
     }, [])
 
     useEffect(() => {
+        const socket = useSocket()
+        join_mail_room(socket, btoa(decodeURIComponent(user)));
+        
+        socket.on("receive-mail", (message) => {
+            let mail = message.hits.hits
+            console.log(message)
+            if(mail.length > 0){
+                mail = mail[0];
+                mail.received = true;
+                setMails([mail, ...mailsRef.current])
+            }
+        })
+
+        return () => {
+            socket.off("receive-mail");
+        };
+    }, [])
+
+    useEffect(() => {
         console.log("Mail updated")
+        mailsRef.current = mails;
     }, [mails])
 
     async function load_mails(user: string, from = 1){
