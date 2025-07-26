@@ -3,6 +3,11 @@ import ListMail from '@/components/User/ListMail'
 import ListMailNew from '@/components/User/ListMailNew'
 import { join_mail_room } from '@/utils/socket'
 import React from 'react'
+import type { Metadata } from 'next'
+ 
+export const metadata: Metadata = {
+  title: "Mails",
+} 
 
 async function User({ params }: {
     params: Promise<{user: string}>
