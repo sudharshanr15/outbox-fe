@@ -21,7 +21,7 @@ function Pagination({ totalCount, load_mails }) {
     }, [totalCount])
 
     useEffect(() => {
-        load_mails(pageStart)
+        load_mails(pageStart == 0 ? 1 : pageStart - 1)
     }, [currentPage])
 
     function nextPage(){

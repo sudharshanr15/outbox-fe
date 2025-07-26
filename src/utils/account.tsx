@@ -2,7 +2,7 @@
 
 import request from "./request";
 
-export async function get_user_mails(user: string, from = 1){
+export async function get_user_mails(user: string, from = 0){
     let url: string = process.env.BACKEND_HOST || "http://localhost:5000"
     const path = "/mails/user/" + user + "?from=" + from
     console.log(process.env.BACKEND_HOST)

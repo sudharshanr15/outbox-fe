@@ -41,11 +41,10 @@ function ListMailNew({ user }) {
     }, [])
 
     useEffect(() => {
-        console.log("Mail updated")
         mailsRef.current = mails;
     }, [mails])
 
-    async function load_mails(user: string, from = 1){
+    async function load_mails(user: string, from = 0){
         const user_mails = await get_user_mails(user, from)
         if(user_mails.success == false){
             console.log("Error fetching emails")
