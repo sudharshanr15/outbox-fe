@@ -3,7 +3,7 @@
 import { get_user_mails, search_user_mails } from '@/utils/account';
 import React, { useEffect, useRef } from 'react'
 
-function Search({ user, setMails }) {
+function Search({ load_mails, user, setMails, setTotalCount }) {
     const search = useRef(null);
 
     function onSearch(e: MouseEvent){
@@ -11,12 +11,11 @@ function Search({ user, setMails }) {
         let input = search.current.value;
 
         if(input.length == 0){
-            get_user_mails(user).then(res => {
-                setMails(res.data.data.data.hits.hits)
-            }).catch(err => console.log(err))
+            load_mails()
         }else{
             search_user_mails(user, search.current.value).then(res => {
-                setMails(res.data.data.data.data.hits.hits)
+                setMails(res.data.data.hits.hits)
+                setTotalCount(res.data.data.hits.total.value)
             }).catch(err => console.log(err))
         }
     }

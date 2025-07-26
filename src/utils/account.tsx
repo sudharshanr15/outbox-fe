@@ -36,7 +36,7 @@ export async function search_user_mails(user: string, search: string){
     }).then(res => {
         return {
             "success": true,
-            "data": res
+            "data": res.data
         }
     }).catch(err => {
         return {
@@ -57,7 +57,7 @@ export async function get_user_mail_by_label(user: string, label: string){
     }).then(res => {
         return {
             "success": true,
-            "data": res
+            "data": res.data
         }
     }).catch(err => {
         return {
