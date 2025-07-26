@@ -19,7 +19,7 @@ function page() {
     if(!userExists){        
         return (
             <div>
-                <UserInputModal isUserExists={isUserExists} />
+                <UserInputModal userExists={userExists} isUserExists={isUserExists} />
             </div>
         )
     }

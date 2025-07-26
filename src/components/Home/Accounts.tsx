@@ -36,7 +36,7 @@ function Accounts() {
                     ))}
                 </div>
             </div>
-            { accountModal && <UserInputModal onClose={() => setAccountModal(false)} isUserExists={() => {}} /> }
+            { accountModal && <UserInputModal onClose={() => setAccountModal(false)} userExists={true} isUserExists={() => {}} /> }
         </div>
     )
 }

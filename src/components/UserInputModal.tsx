@@ -3,7 +3,7 @@ import Modal from './Modal'
 import { verify_user } from '@/utils/account'
 import { add_user_account } from '@/utils/local_storage'
 
-function UserInputModal({ isUserExists, onClose }: { isUserExists?: React.Dispatch<React.SetStateAction<boolean>>, onClose?: any }) {
+function UserInputModal({ isUserExists, onClose, userExists }: { isUserExists?: React.Dispatch<React.SetStateAction<boolean>>, onClose?: any, userExists?: boolean }) {
     const userInput = useRef(null)
     const passInput = useRef(null)
     const [invalidClient, setInvalidClient] = useState(false)
@@ -24,10 +24,8 @@ function UserInputModal({ isUserExists, onClose }: { isUserExists?: React.Dispat
         verify_user(user, pass).then(async (res) => {
             if(res.success){
                 await add_user_account(user, pass)
-                if(isUserExists != null){
-                    isUserExists(true)
-                    onClose()
-                }
+                isUserExists(true)
+                onClose()
             }else{
                 setInvalidClient(true)
             }
@@ -58,7 +56,7 @@ function UserInputModal({ isUserExists, onClose }: { isUserExists?: React.Dispat
                     {/* <p className='text-alert-error mt-2 text-sm'>This field is required</p> */}
                 </div>
                 <button type='submit' className='button w-full mt-2' disabled={isLoading ? true : false}>{ isLoading ? "Verifying..." : "Add Account"  }</button>
-                {isUserExists == undefined && <button type='button' className='button bg-dark-dp4 w-full mt-2' onClick={onClose}>Cancel</button>}
+                {userExists && <button type='button' className='button bg-dark-dp4 w-full mt-2' onClick={onClose}>Cancel</button>}
             </form>
         </Modal>
     )
