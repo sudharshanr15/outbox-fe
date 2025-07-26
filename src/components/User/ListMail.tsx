@@ -1,11 +1,15 @@
 'use client';
 
 import { get_user_mail_by_label, get_user_mails, load_user_mails } from '@/utils/account';
-import React, { use, useEffect, useState } from 'react'
+import React, { use, useEffect, useRef, useState } from 'react'
 import Search from './Search';
 import { ArrowLeft, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { get_item } from '@/utils/local_storage';
+import { join_mail_room } from '@/utils/socket';
+import { useRouter } from 'next/router';
+import { useSocket } from '@/app/hooks/useSocket';
+// import { socket } from '@/utils/socket';
 
 const label_colors = {
     "All": "bg-white",
@@ -23,6 +27,7 @@ const page_size = 50;
 function ListMail({ user }: {user: string}) {
     user = decodeURIComponent(user)
     const [mails, setMails] = useState([]);
+    const mailsRef = useRef(mails);
     const [activeLabel, setActiveLabel] = useState(labels[0]);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -89,6 +94,26 @@ function ListMail({ user }: {user: string}) {
         setCurrentPageStart(((currentPage - 1) * page_size) + 1);
         setCurrentPageEnd(Math.min(page_size * currentPage, totalValue));
     }, [currentPage, mails])
+    
+    useEffect(() => {
+        const socket = useSocket()
+        join_mail_room(socket, btoa(decodeURIComponent(user)));
+        
+        socket.on("receive-mail", (message) => {
+            let mail = message.hits.hits
+            console.log(mail)
+            if(mail.length > 0)
+                setMails(prev => [mail[0] , ...prev])
+        })
+
+        return () => {
+            socket.off("receive-mail");
+        };
+    }, [])
+
+    useEffect(() => {
+        mailsRef.current = mails;
+    }, [mails])
 
     function pageIncrement(){
         if(currentPageEnd >= totalValue){

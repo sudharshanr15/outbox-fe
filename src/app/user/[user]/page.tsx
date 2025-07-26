@@ -1,4 +1,6 @@
+import SocketInit from '@/components/SocketInit'
 import ListMail from '@/components/User/ListMail'
+import { join_mail_room } from '@/utils/socket'
 import React from 'react'
 
 async function User({ params }: {
