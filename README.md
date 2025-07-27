@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Outbox FE
 
-## Getting Started
+A Next.js application for managing and viewing user emails, featuring real-time updates via Socket.IO and UI built with TailwindCSS.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Add, store, and verify user accounts using local storage and backend verification.
+- Fetch mails for a user, with pagination and label-based filtering.
+- Real-time updates: New mails are pushed via Socket.IO and instantly displayed.
+- Search mails by keyword.
+- Filter mails by predefined labels (e.g., Interested, Spam).
+- Navigate through mails in pages of size 50.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Architecture Details
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Frontend:** Built with [Next.js](https://nextjs.org), and TailwindCSS for UI.
+- **Real-Time Synchronization:** Socket.IO client
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Prerequisites
 
-## Learn More
+- [Node.js](https://nodejs.org/)
+- [Outbox BE](https://github.com/sudharshanr15/outbox-be.git)
 
-To learn more about Next.js, take a look at the following resources:
+## Installation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Clone the repository:**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```bash
+   git clone https://github.com/sudharshanr15/outbox-fe.git
+   cd outbox-fe/
 
-## Deploy on Vercel
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. **Configure environment variables:**
+   Copy the `.env.example` to `.env` file in the project root directory and add your configuration and credentials
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   ```bash
+   cp .env.example .env
+   ```
+
+3. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+   - Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+4. **Back-end application**
+    The back-end application is maintained on a separate repository. You can find the source code here:
+    ```
+    https://github.com/sudharshanr15/outbox-be.git
+    ```
+## Usage
+
+- **Start the application (Production-mode)**
+
+  ```bash
+  npm start
+  ```
+
+- **Start the application (Development-mode)**
+
+  ```bash
+  npm run dev
+  ```
+
+## Scripts
+
+- `npm start` — Start the production server
+- `npm run dev` — Start in development mode
+- `npm run build` — Build the TypeScript project
